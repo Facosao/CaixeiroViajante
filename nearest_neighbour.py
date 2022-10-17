@@ -10,7 +10,7 @@ def nearest_neighbour(set: list[Data.Circulo]) -> float:
     
     surface = pygame.display.get_surface()
     cor=(0, 0, 0)
-    delay = 0
+    delay = 0.1
     #surface.fill((255, 255, 255))
 
     distancia_total = 0
@@ -110,4 +110,4 @@ def nearest_neighbour(set: list[Data.Circulo]) -> float:
     
     forca_bruta.iteracao_forca_bruta(set, pontos_conectdos, (0, 255, 0))  # type: ignore
     
-    return pontos_conectdos
+    return distancia_total, pontos_conectdos

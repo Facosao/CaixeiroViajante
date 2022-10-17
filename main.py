@@ -22,10 +22,10 @@ if __name__ == "__main__":
         circulo.desenhar()
     pygame.display.flip()
 
-    forca_bruta.forca_bruta(set)
+    #forca_bruta.forca_bruta(set)
     #nearest_neighbour(set)
-    #tempera = TemperaSimulada(set)
-    #tempera.executar()
+    tempera = TemperaSimulada(set)
+    tempera.executar()
 
     for circulo in set:
         print("coord =", circulo.pos)

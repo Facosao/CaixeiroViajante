@@ -95,3 +95,5 @@ def forca_bruta(set: list[Data.Circulo]):
     print("Menor distancia =", menor_distancia)
     print("set final =", menor_permutacao)
     iteracao_forca_bruta(set, menor_permutacao, (0, 255, 0))
+
+    return menor_distancia

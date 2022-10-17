@@ -43,6 +43,7 @@ namespace TspSA.Domain
  
             Generation ++; // Inicial -> 0
  
+            // Sorteia um número entre 0 e 1 -> Multiplica este número pelos índices possíveis e arredonda o resultado.
             var indexToSwap1 = (int)Math.Round((CurrentSolution.Route.Count() - 1) * picker.NextDouble());
             var indexToSwap2 = (int)Math.Round((CurrentSolution.Route.Count() - 1) * picker.NextDouble());
  

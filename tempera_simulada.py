@@ -22,6 +22,8 @@ class TemperaSimulada:
         self.permutacoes = []
         self.iteracoes = 0
         self.nada_feito = 0
+        self.distancia_nn = 0
+        self.distancia_exata = 0
 
         self.chute_inicial()  # Implementar Nearest Neighbour como alternativa
         
@@ -51,7 +53,12 @@ class TemperaSimulada:
                 j += 1
         '''
 
-        self.solucao_atual = nearest_neighbour(self.set)
+        #self.distancia_nn, self.solucao_atual = nearest_neighbour(self.set)
+        self.distancia_exata = forca_bruta.forca_bruta(self.set)
+        self.distancia_nn, _ = nearest_neighbour(self.set)
+        self.solucao_atual = list(range(len(self.set)))
+        self.solucao_atual.pop(0)
+        self.solucao_atual.append(0)
 
 
     def gerar_nova_solucao(self):
@@ -60,15 +67,14 @@ class TemperaSimulada:
 
             while True:
 
-                
-                #indice1 = random.randint(0, (len(self.set) - 1))
-                #indice2 = random.randint(0, (len(self.set) - 1))
+                ''' -> Original
+                indice1 = random.randint(0, (len(self.set) - 1))
+                indice2 = random.randint(0, (len(self.set) - 1))
 
                 # Índices gerados não podem ser iguais
-                #if indice1 == indice2:
-                #    continue
+                if indice1 == indice2:
+                    continue
 
-                '''
                 # Um nó não pode apontar para si mesmo
                 #print("len set =", len(self.set), "len solucao_atual =", len(self.solucao_atual), "indice1 =", indice1, "indice2 =", indice2)
                 if self.solucao_atual[indice1] == indice1 or self.solucao_atual[indice2] == indice2:
@@ -84,21 +90,15 @@ class TemperaSimulada:
                 # Dois nós não podem apontar um para o outro
                 if valor_indice1 == indice1 or valor_indice2 == indice2:
                     continue
-                '''
                 
-                '''
                 solucao_valida = copy.deepcopy(self.solucao_atual)
                 valor1 = solucao_valida[indice1]
                 valor2 = solucao_valida[indice2]
                 solucao_valida[indice1] = valor2
                 solucao_valida[indice2] = valor1
-                '''
-                solucao_valida = random.sample(self.solucao_atual, len(self.solucao_atual))
 
-                #check = False
-                check = True
-
-                '''
+                
+                check = False
                 for j in range(len(solucao_valida)):
 
                     indice = solucao_valida[j]
@@ -106,9 +106,17 @@ class TemperaSimulada:
                     if (indice == j) or (solucao_valida[indice] == j):
                         check = True
                         break
+
+                if check is True:
+                    continue
                 '''
 
-                
+                #''' -> Funcionando
+                solucao_valida = random.sample(self.solucao_atual, len(self.solucao_atual))
+
+                #check = False
+                check = True
+
                 pontos_conectados = []
                 i = 0
                 #valido = True
@@ -129,14 +137,17 @@ class TemperaSimulada:
                         
                 if check is False:
                     continue
-                
-                '''
-                TENTATIVA
-                Trocar dois numeros entre 1 e limite, e colocar 0 no final
+                #'''
 
-                TENTATIVA 2
-                Iterar sobre a lista N vezes tentando achar um começo em que o laço se feche
-                -> Alterar o começo da lista em cada iteração
+                ''' - > Solução Original
+                indice1 = round((len(self.set) - 1) * random.random())
+                indice2 = round((len(self.set) - 1) * random.random())
+
+                solucao_valida = copy.deepcopy(self.solucao_atual)
+                valor1 = solucao_valida[indice1]
+                valor2 = solucao_valida[indice2]
+                solucao_valida[indice1] = valor2
+                solucao_valida[indice2] = valor1
                 '''
 
                 return solucao_valida
@@ -217,7 +228,7 @@ class TemperaSimulada:
     
     def executar(self):
 
-        while self.temperatura > 1 and self.nada_feito < 50:
+        while self.temperatura > 1:
             self.iteracao_tempera_simulada()
             forca_bruta.iteracao_forca_bruta(self.set, self.solucao_atual)
 
@@ -226,4 +237,7 @@ class TemperaSimulada:
             self.melhor_solucao = self.solucao_atual
 
         print("melhor_solucao =", self.melhor_solucao)
+        print("distancia_total - tempera =", self.menor_distancia)
+        print("distancia_total - nearest =", self.distancia_nn)
+        print("distancia_total - random  =", self.distancia_exata)
         forca_bruta.iteracao_forca_bruta(self.set, self.melhor_solucao, (0, 255, 0))
