@@ -46,19 +46,8 @@ def forca_bruta(set: list[Data.Circulo]):
 
         check = False
 
-        '''
-        for i in range(len(lista)):
-
-            indice = lista[i]
-
-            if (indice == i) or (lista[indice] == i):
-                check = True
-        '''
-
         pontos_conectados = []
         i = 0
-        #valido = True
-        #print("lista =", lista)
 
         while len(pontos_conectados) < len(lista):
 
@@ -74,9 +63,6 @@ def forca_bruta(set: list[Data.Circulo]):
             
         if check is True:
             continue
-
-        #if lista[len(lista) - 1] != 0:
-        #    continue
 
         permutacoes_aceitas += 1
 
@@ -96,4 +82,72 @@ def forca_bruta(set: list[Data.Circulo]):
     print("set final =", menor_permutacao)
     iteracao_forca_bruta(set, menor_permutacao, (0, 255, 0))
 
-    return menor_distancia
+    return menor_distancia, menor_permutacao
+
+
+class ForcaBruta:
+
+    def __init__(self, pontos) -> None:
+        self.pontos = pontos        
+        self.permutacoes = []
+        self.menor_distancia = 1000000000
+        self.menor_permutacao = []
+        self.iteracao = 0
+
+    def executar(self):
+
+        if len(self.permutacoes) == 0:
+            print("Gerando permutacoes...")
+            self.permutacoes = list(itertools.permutations(range(len(self.pontos))))
+            print("Todas as permutacoes foram calculadas")
+
+        if self.iteracao < len(self.permutacoes):
+
+            permutacao = self.permutacoes[self.iteracao]
+
+            check = False
+            pontos_conectados = []
+            i = 0
+
+            while len(pontos_conectados) < len(permutacao):
+
+                prox = permutacao[i]
+
+                if pontos_conectados.count(prox) > 0:
+                    check = True
+                    break
+                else:
+                    pontos_conectados.append(prox)
+
+                i = prox
+                
+            if check is True:
+                self.iteracao += 1
+                return
+
+            distancia = self.iterar(permutacao)
+
+            if distancia < self.menor_distancia:
+                self.menor_distancia = distancia
+                self.menor_permutacao = permutacao
+
+            self.iteracao += 1
+
+    def iterar(self, permutacao):
+                    
+        surface = pygame.display.get_surface()
+        distancia_total = 0
+
+        surface.fill((255, 255, 255))
+
+        for i in range(len(permutacao)):
+            dx = abs(self.pontos[i].pos[0] - self.pontos[permutacao[i]].pos[0])
+            dy = abs(self.pontos[i].pos[1] - self.pontos[permutacao[i]].pos[1])
+            distancia = math.hypot(dx, dy)
+            distancia_total += distancia
+
+            pygame.draw.aaline(surface, (0, 0, 0), self.pontos[i].pos, self.pontos[permutacao[i]].pos)
+            self.pontos[i].desenhar()
+            self.pontos[permutacao[i]].desenhar()
+
+        return distancia_total

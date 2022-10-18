@@ -8,6 +8,7 @@ randY = lambda: random.randint(10, 590)
 ITEMS = 15
 
 class Circulo:
+    
     def __init__(self) -> None:
         self.pos = randX(), randY()
         self.cor = (0, 0, 255)
@@ -18,6 +19,13 @@ class Circulo:
 
     def desenhar(self) -> None:
         pygame.draw.circle(self.surface, self.cor, self.pos, (self.raio / 2))
+
+class MelhoresDistancias:
+    
+    def __init__(self) -> None:
+        self.forca_bruta = -1
+        self.vizinho_mais_prox = -1
+        self.tempera_simulada = -1
 
 def checar_intersecao(circulo_1: Circulo, circulo_2: Circulo) -> bool:
 
@@ -39,3 +47,15 @@ def gerar_dados(total_items: int) -> list[Circulo]:
             set[i] = Circulo()
 
     return set
+
+def imprimir_pontos(set: list[Circulo]) -> None:
+    
+    surface = pygame.display.get_surface()
+    surface.fill((255, 255, 255))
+
+    for circulo in set:
+        circulo.desenhar()
+
+def calcular_distancia_total(pontos: list[Circulo]):
+
+    pass

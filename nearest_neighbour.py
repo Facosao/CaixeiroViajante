@@ -6,12 +6,12 @@ import Data
 import forca_bruta
 
 
-def nearest_neighbour(set: list[Data.Circulo]) -> float:
+def nearest_neighbour(set: list[Data.Circulo], delay) -> float:
     
     surface = pygame.display.get_surface()
-    cor=(0, 0, 0)
-    delay = 0.1
-    #surface.fill((255, 255, 255))
+    surface.fill((255, 255, 255))
+    Data.imprimir_pontos(set)
+    delay = float(delay)
 
     distancia_total = 0
     conexoes = len(set)
@@ -23,15 +23,7 @@ def nearest_neighbour(set: list[Data.Circulo]) -> float:
     nova_conexao = 0
 
     while conexoes > 0:
-
-        print("Pontos conectados =", pontos_conectdos, "conexoes =", conexoes)
-        #for i in range(len(pontos_desconectados)):
-            
-        #if pontos_desconectados[i] == -1:
-        #    continue  # Ponto conectado
-        
-        # Buscar ponto mais prox
-        #nova_conexao = i            
+      
         menor_distancia = 100000000
         indice_ponto_mais_prox = 0
         
@@ -59,10 +51,8 @@ def nearest_neighbour(set: list[Data.Circulo]) -> float:
 
         # Ponto conectado
         pontos_conectdos[nova_conexao] = indice_ponto_mais_prox
-        #pontos_conectdos[indice_ponto_mais_prox] = i
 
         pontos_desconectados[nova_conexao] = -1
-        #pontos_desconectados[indice_ponto_mais_prox] = -1
 
         if menor_distancia == 100000000:
             dx = abs(set[nova_conexao].pos[0] - set[indice_ponto_mais_prox].pos[0])
@@ -71,14 +61,6 @@ def nearest_neighbour(set: list[Data.Circulo]) -> float:
             distancia_total += distancia
         else:
             distancia_total += menor_distancia
-
-        # Desenhar conexões
-        #pygame.draw.aaline(surface, cor, set[nova_conexao].pos, set[indice_ponto_mais_prox].pos)
-        #set[nova_conexao].desenhar()
-        #set[indice_ponto_mais_prox].desenhar()
-        #pygame.display.flip()
-        #pygame.event.pump()
-        #time.sleep(0.5)
 
         surface.fill((255, 255, 255))
         for circulo in set:
@@ -97,16 +79,10 @@ def nearest_neighbour(set: list[Data.Circulo]) -> float:
         pygame.display.flip()
         pygame.event.pump()
         time.sleep(delay)
-        
-        print("indice =", nova_conexao, "prox =", indice_ponto_mais_prox)
-        #break
 
         nova_conexao = indice_ponto_mais_prox
         conexoes -= 1
 
-    print("Distância total         =", distancia_total)
-    print("Pontos conectados final =", pontos_conectdos)
-    print("Pontos desconec   final =", pontos_desconectados)
     
     forca_bruta.iteracao_forca_bruta(set, pontos_conectdos, (0, 255, 0))  # type: ignore
     

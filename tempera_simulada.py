@@ -10,7 +10,7 @@ from nearest_neighbour import nearest_neighbour
 class TemperaSimulada:
 
 
-    def __init__(self, set: list[Data.Circulo], swap=True) -> None:
+    def __init__(self, set: list[Data.Circulo]) -> None:
         self.set = set
         self.temperatura = 100000
         self.resfriamento = 0.0005
@@ -18,144 +18,65 @@ class TemperaSimulada:
         self.solucao_atual = []
         self.melhor_solucao = []
         self.menor_distancia = 1000000000
-        self.swap = swap
-        self.permutacoes = []
         self.iteracoes = 0
-        self.nada_feito = 0
-        self.distancia_nn = 0
-        self.distancia_exata = 0
+        self.falhas_consecutivas = 0
 
-        self.chute_inicial()  # Implementar Nearest Neighbour como alternativa
+        self.chute_inicial()
         
         self.distancia_atual = self.calcular_distancia_total(self.solucao_atual)
 
         self.melhor_solucao = self.solucao_atual
         self.menor_distancia = self.distancia_atual
 
-        if swap is False:
-            self.permutacoes = list(itertools.permutations(range(len(self.set))))
-
 
     def chute_inicial(self):
 
-        '''
-        possiveis = list(range(len(self.set)))
-        j = 0
-
-        while j < len(possiveis):
-
-            num = random.randint(0, (len(self.set) - 1))
-
-            if num == j or (num in self.solucao_atual):
-                continue
-            else:
-                self.solucao_atual.append(num)
-                j += 1
-        '''
-
-        #self.distancia_nn, self.solucao_atual = nearest_neighbour(self.set)
-        self.distancia_exata = forca_bruta.forca_bruta(self.set)
-        self.distancia_nn, _ = nearest_neighbour(self.set)
-        self.solucao_atual = list(range(len(self.set)))
-        self.solucao_atual.pop(0)
-        self.solucao_atual.append(0)
+        #self.solucao_atual = list(range(len(self.set)))
+        #self.solucao_atual.pop(0)
+        #self.solucao_atual.append(0)
+        _, self.solucao_atual = nearest_neighbour(self.set, 0)
 
 
     def gerar_nova_solucao(self):
-        
-        if self.swap is True:
 
-            while True:
+        while True:
+            ''' -> Funcionando
+            solucao_valida = random.sample(self.solucao_atual, len(self.solucao_atual))
+            
+            check = True
+            pontos_conectados = []
+            i = 0
 
-                ''' -> Original
-                indice1 = random.randint(0, (len(self.set) - 1))
-                indice2 = random.randint(0, (len(self.set) - 1))
+            while len(pontos_conectados) < len(solucao_valida):
 
-                # Índices gerados não podem ser iguais
-                if indice1 == indice2:
-                    continue
+                prox = solucao_valida[i]
 
-                # Um nó não pode apontar para si mesmo
-                #print("len set =", len(self.set), "len solucao_atual =", len(self.solucao_atual), "indice1 =", indice1, "indice2 =", indice2)
-                if self.solucao_atual[indice1] == indice1 or self.solucao_atual[indice2] == indice2:
-                    continue
+                if pontos_conectados.count(prox) > 0:
+                    check = False
+                    break
+                else:
+                    pontos_conectados.append(prox)
 
-                # O valor em um indice não pode ser atribuido a outro indice igual a este valor
-                if indice1 == self.solucao_atual[indice2] or indice2 == self.solucao_atual[indice1]:
-                    continue
+                i = prox
+                    
+            if check is False:
+                continue
+            '''
 
-                valor_indice1 = self.solucao_atual[indice1]
-                valor_indice2 = self.solucao_atual[indice2]
+            solucao_valida = copy.deepcopy(self.solucao_atual)
 
-                # Dois nós não podem apontar um para o outro
-                if valor_indice1 == indice1 or valor_indice2 == indice2:
-                    continue
-                
-                solucao_valida = copy.deepcopy(self.solucao_atual)
-                valor1 = solucao_valida[indice1]
-                valor2 = solucao_valida[indice2]
-                solucao_valida[indice1] = valor2
-                solucao_valida[indice2] = valor1
+            inicio_segmento = random.randint(0, (len(self.set) - 1))
+            fim_segmento = random.randint(inicio_segmento, (len(self.set) - 1))
 
-                
-                check = False
-                for j in range(len(solucao_valida)):
+            reverso = []
+            for i in range(inicio_segmento, (fim_segmento + 1)):
+                reverso.append(solucao_valida[i])
 
-                    indice = solucao_valida[j]
+            reverso.reverse()
+            for i in range(len(reverso)):
+                solucao_valida[inicio_segmento + i] = reverso[i]
 
-                    if (indice == j) or (solucao_valida[indice] == j):
-                        check = True
-                        break
-
-                if check is True:
-                    continue
-                '''
-
-                #''' -> Funcionando
-                solucao_valida = random.sample(self.solucao_atual, len(self.solucao_atual))
-
-                #check = False
-                check = True
-
-                pontos_conectados = []
-                i = 0
-                #valido = True
-                #print("solucao_atual  =", self.solucao_atual)
-                #print("solucao_valida =", solucao_valida)
-
-                while len(pontos_conectados) < len(solucao_valida):
-
-                    prox = solucao_valida[i]
-
-                    if pontos_conectados.count(prox) > 0:
-                        check = False
-                        break
-                    else:
-                        pontos_conectados.append(prox)
-
-                    i = prox
-                        
-                if check is False:
-                    continue
-                #'''
-
-                ''' - > Solução Original
-                indice1 = round((len(self.set) - 1) * random.random())
-                indice2 = round((len(self.set) - 1) * random.random())
-
-                solucao_valida = copy.deepcopy(self.solucao_atual)
-                valor1 = solucao_valida[indice1]
-                valor2 = solucao_valida[indice2]
-                solucao_valida[indice1] = valor2
-                solucao_valida[indice2] = valor1
-                '''
-
-                return solucao_valida
-
-        else:
-
-            # Gerar permutações
-            return self.solucao_atual
+            return solucao_valida
                             
 
     def calcular_distancia_total(self, solucao) -> float:
@@ -163,8 +84,14 @@ class TemperaSimulada:
         distancia_total = 0
 
         for i in range(len(solucao)):
-            dx = abs(self.set[i].pos[0] - self.set[solucao[i]].pos[0])
-            dy = abs(self.set[i].pos[1] - self.set[solucao[i]].pos[1])
+
+            if i != (len(solucao) - 1):
+                dx = abs(self.set[solucao[i]].pos[0] - self.set[solucao[i+1]].pos[0])
+                dy = abs(self.set[solucao[i]].pos[1] - self.set[solucao[i+1]].pos[1])
+            else:
+                dx = abs(self.set[solucao[i]].pos[0] - self.set[solucao[0]].pos[0])
+                dy = abs(self.set[solucao[i]].pos[1] - self.set[solucao[0]].pos[1])
+          
             distancia = math.hypot(dx, dy)
             distancia_total += distancia
 
@@ -196,9 +123,6 @@ class TemperaSimulada:
         nova_solucao = self.gerar_nova_solucao()
         nova_distancia = self.calcular_distancia_total(nova_solucao)
 
-        #print("nova_solucao   =", nova_solucao)
-        #print("nova_distancia =", nova_distancia)
-
         # Decisão
 
         if self.devo_usar_solucao(nova_distancia):
@@ -207,11 +131,11 @@ class TemperaSimulada:
 
             self.solucao_atual = nova_solucao
             self.distancia_atual = nova_distancia
-            self.nada_feito = 0
+            self.falhas_consecutivas = 0
         else:
 
-            self.nada_feito += 1
-            print("Nada feito")
+            self.falhas_consecutivas += 1
+            print("Iteracao descartada")
 
         if nova_distancia < self.menor_distancia:
 
@@ -225,19 +149,37 @@ class TemperaSimulada:
         self.iteracoes += 1
         print("iteracoes =", self.iteracoes)
 
-    
+    def imprimir_solucao_custom(self, solucao, cor=(0, 0, 0)):
+
+        surface = pygame.display.get_surface()
+        surface.fill((255, 255, 255))
+
+        for i in range(len(solucao)):
+
+            if i != (len(solucao) - 1):
+                pygame.draw.aaline(surface, cor, self.set[solucao[i]].pos, self.set[solucao[i+1]].pos)
+                self.set[solucao[i]].desenhar()
+                self.set[solucao[i+1]].desenhar()
+            else:
+                pygame.draw.aaline(surface, cor, self.set[solucao[i]].pos, self.set[solucao[0]].pos)
+                self.set[solucao[i]].desenhar()
+                self.set[solucao[0]].desenhar()
+            
+        pygame.display.flip()
+        pygame.event.pump()
+
     def executar(self):
 
-        while self.temperatura > 1:
+        while self.temperatura > 1 and self.falhas_consecutivas < 50:
             self.iteracao_tempera_simulada()
-            forca_bruta.iteracao_forca_bruta(self.set, self.solucao_atual)
+            #forca_bruta.iteracao_forca_bruta(self.set, self.solucao_atual)
+            self.imprimir_solucao_custom(self.solucao_atual)
 
         if self.distancia_atual < self.menor_distancia:
             self.menor_distancia = self.distancia_atual
             self.melhor_solucao = self.solucao_atual
 
-        print("melhor_solucao =", self.melhor_solucao)
-        print("distancia_total - tempera =", self.menor_distancia)
-        print("distancia_total - nearest =", self.distancia_nn)
-        print("distancia_total - random  =", self.distancia_exata)
-        forca_bruta.iteracao_forca_bruta(self.set, self.melhor_solucao, (0, 255, 0))
+        #forca_bruta.iteracao_forca_bruta(self.set, self.melhor_solucao, (0, 255, 0))
+        self.imprimir_solucao_custom(self.melhor_solucao, (0, 255, 0))
+
+        return self.menor_distancia, self.melhor_solucao
