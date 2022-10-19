@@ -14,17 +14,9 @@ if __name__ == "__main__":
 
     clock = pygame.time.Clock()
 
-
-    # ----- Métodos -----
-    #forca_bruta.forca_bruta(set)
-    #nearest_neighbour(set)
-    #tempera = TemperaSimulada(set)
-    #tempera.executar()
-
     # ----- Objetos -----
     pontos = []
     distancias = Data.MelhoresDistancias()
-    #tempera = TemperaSimulada(pontos)
     melhor_forca_bruta = []
     melhor_vizinho_prox = []
     melhor_tempera_sim = []
@@ -95,7 +87,6 @@ if __name__ == "__main__":
                 if distancias.tempera_simulada == (-1):
                     distancias.tempera_simulada, melhor_tempera_sim = tempera.executar()
                 
-                #forca_bruta.iteracao_forca_bruta(pontos, melhor_tempera_sim, (0, 255, 0))
                 tempera.imprimir_solucao_custom(tempera.melhor_solucao, (0, 255, 0))
                 estado = menu.IMPRIMIR_MENU
 

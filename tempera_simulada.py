@@ -1,10 +1,8 @@
 import math
 import copy
-import itertools
 import random
 import pygame
 import Data
-import forca_bruta
 from nearest_neighbour import nearest_neighbour
 
 class TemperaSimulada:
@@ -31,37 +29,12 @@ class TemperaSimulada:
 
     def chute_inicial(self):
 
-        #self.solucao_atual = list(range(len(self.set)))
-        #self.solucao_atual.pop(0)
-        #self.solucao_atual.append(0)
         _, self.solucao_atual = nearest_neighbour(self.set, 0)
 
 
     def gerar_nova_solucao(self):
 
         while True:
-            ''' -> Funcionando
-            solucao_valida = random.sample(self.solucao_atual, len(self.solucao_atual))
-            
-            check = True
-            pontos_conectados = []
-            i = 0
-
-            while len(pontos_conectados) < len(solucao_valida):
-
-                prox = solucao_valida[i]
-
-                if pontos_conectados.count(prox) > 0:
-                    check = False
-                    break
-                else:
-                    pontos_conectados.append(prox)
-
-                i = prox
-                    
-            if check is False:
-                continue
-            '''
 
             solucao_valida = copy.deepcopy(self.solucao_atual)
 
@@ -127,19 +100,14 @@ class TemperaSimulada:
 
         if self.devo_usar_solucao(nova_distancia):
 
-            print("Troca de", self.distancia_atual, "para", nova_distancia)
-
             self.solucao_atual = nova_solucao
             self.distancia_atual = nova_distancia
             self.falhas_consecutivas = 0
         else:
 
             self.falhas_consecutivas += 1
-            print("Iteracao descartada")
 
         if nova_distancia < self.menor_distancia:
-
-            print("Melhora de", self.menor_distancia, "para", nova_distancia)
 
             self.melhor_solucao = nova_solucao
             self.menor_distancia = nova_distancia
@@ -147,7 +115,9 @@ class TemperaSimulada:
         self.temperatura *= (1 - self.resfriamento)
 
         self.iteracoes += 1
-        print("iteracoes =", self.iteracoes)
+        
+        if (self.iteracoes % 1000) == 0:
+            print("iteracoes =", self.iteracoes, "melhor_distancia =", self.menor_distancia)
 
     def imprimir_solucao_custom(self, solucao, cor=(0, 0, 0)):
 
@@ -172,14 +142,12 @@ class TemperaSimulada:
 
         while self.temperatura > 1 and self.falhas_consecutivas < 50:
             self.iteracao_tempera_simulada()
-            #forca_bruta.iteracao_forca_bruta(self.set, self.solucao_atual)
             self.imprimir_solucao_custom(self.solucao_atual)
 
         if self.distancia_atual < self.menor_distancia:
             self.menor_distancia = self.distancia_atual
             self.melhor_solucao = self.solucao_atual
 
-        #forca_bruta.iteracao_forca_bruta(self.set, self.melhor_solucao, (0, 255, 0))
         self.imprimir_solucao_custom(self.melhor_solucao, (0, 255, 0))
 
         return self.menor_distancia, self.melhor_solucao
