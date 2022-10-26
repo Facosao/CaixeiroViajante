@@ -3,11 +3,12 @@ import Data
 
 NENHUMA_ENTRADA = -4
 IMPRIMIR_MENU = -2
-GERAR_DADOS = 0
-ALTERAR_DELAY = 1
-FORCA_BRUTA = 2
-VIZINHO_MAIS_PROXIMO = 3
-TEMPERA_SIMULADA = 4
+GERAR_DADOS = 1
+ALTERAR_DELAY = 2
+FORCA_BRUTA = 3
+VIZINHO_MAIS_PROXIMO = 4
+TEMPERA_SIMULADA = 5
+SUBIDA_ENCOSTA = 6
 
 dado_entrada = "0"
 
@@ -22,11 +23,12 @@ def imprimir_menu(distancias: Data.MelhoresDistancias, qtd_pontos: int, delay) -
     os.system("clear")
 
     print("Escolha uma opcao:")
-    print("0 - Gerar novo conjunto de dados      - Tamanho atual:", qtd_pontos)
-    print("1 - Alterar delay (vizinho mais prox) - Delay:", delay)
-    print("2 - Forca bruta          - Melhor solucao:", distancias.forca_bruta)
-    print("3 - Vizinho mais proximo - Melhor solucao:", distancias.vizinho_mais_prox)
-    print("4 - Tempera Simulada     - Melhor solucao:", distancias.tempera_simulada)
+    print("1 - Gerar novo conjunto de dados      - Tamanho atual:", qtd_pontos)
+    print("2 - Alterar delay (vizinho mais prox) - Delay:", delay)
+    print("3 - Forca bruta          - Melhor solucao:", distancias.forca_bruta)
+    print("4 - Vizinho mais proximo - Melhor solucao:", distancias.vizinho_mais_prox)
+    print("5 - Tempera Simulada     - Melhor solucao:", distancias.tempera_simulada)
+    print("6 - Subida da encosta    - Melhor solucao:", distancias.subida_encosta)
 
 def gerar_dados():
 

@@ -20,6 +20,7 @@ if __name__ == "__main__":
     melhor_forca_bruta = []
     melhor_vizinho_prox = []
     melhor_tempera_sim = []
+    melhor_subida_encosta = []
 
     # ----- Variáveis de controle -----
     delay = 0.1
@@ -57,16 +58,20 @@ if __name__ == "__main__":
                 estado = menu.IMPRIMIR_MENU
 
             case menu.GERAR_DADOS:
-
                 estado, pontos = menu.gerar_dados()
                 tempera = TemperaSimulada(pontos)
                 distancias = Data.MelhoresDistancias()
                 melhor_forca_bruta = []
                 melhor_vizinho_prox = []
                 melhor_tempera_sim = []
+                melhor_subida_encosta = []
                 Data.imprimir_pontos(pontos)
                 
             case menu.FORCA_BRUTA:
+                if len(pontos) > 10:
+                    print("Numero de pontos maior que o limite para forca bruta!")
+                    estado = menu.NENHUMA_ENTRADA
+                    continue
 
                 if distancias.forca_bruta == (-1):
                     distancias.forca_bruta, melhor_forca_bruta = forca_bruta.forca_bruta(pontos)
@@ -75,19 +80,26 @@ if __name__ == "__main__":
                 estado = menu.IMPRIMIR_MENU
 
             case menu.VIZINHO_MAIS_PROXIMO:
-                
                 if distancias.vizinho_mais_prox == (-1):
                     distancias.vizinho_mais_prox, melhor_vizinho_prox = nearest_neighbour(pontos, delay)
 
                 forca_bruta.iteracao_forca_bruta(pontos, melhor_vizinho_prox, (0, 255, 0))
                 estado = menu.IMPRIMIR_MENU
 
-            case menu.TEMPERA_SIMULADA:
-                
+            case menu.TEMPERA_SIMULADA:  
+                tempera = TemperaSimulada(pontos)          
                 if distancias.tempera_simulada == (-1):
                     distancias.tempera_simulada, melhor_tempera_sim = tempera.executar()
                 
-                tempera.imprimir_solucao_custom(tempera.melhor_solucao, (0, 255, 0))
+                tempera.imprimir_solucao_custom(melhor_tempera_sim, (0, 255, 0))
+                estado = menu.IMPRIMIR_MENU
+
+            case menu.SUBIDA_ENCOSTA:
+                tempera = TemperaSimulada(pontos)
+                if distancias.subida_encosta == (-1):
+                    distancias.subida_encosta, melhor_subida_encosta = tempera.executar(subida=True)
+                
+                tempera.imprimir_solucao_custom(melhor_subida_encosta, (0, 255, 0))
                 estado = menu.IMPRIMIR_MENU
 
             case menu.NENHUMA_ENTRADA:

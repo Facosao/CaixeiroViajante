@@ -26,6 +26,7 @@ class MelhoresDistancias:
         self.forca_bruta = -1
         self.vizinho_mais_prox = -1
         self.tempera_simulada = -1
+        self.subida_encosta = -1
 
 def checar_intersecao(circulo_1: Circulo, circulo_2: Circulo) -> bool:
 

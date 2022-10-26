@@ -1,3 +1,4 @@
+import itertools
 import math
 import copy
 import random
@@ -18,6 +19,7 @@ class TemperaSimulada:
         self.menor_distancia = 1000000000
         self.iteracoes = 0
         self.falhas_consecutivas = 0
+        self.subida = 1
 
         self.chute_inicial()
         
@@ -29,7 +31,9 @@ class TemperaSimulada:
 
     def chute_inicial(self):
 
-        _, self.solucao_atual = nearest_neighbour(self.set, 0)
+        #_, self.solucao_atual = nearest_neighbour(self.set, 0)
+        self.solucao_atual = list(range(len(self.set)))
+        random.shuffle(self.solucao_atual)
 
 
     def gerar_nova_solucao(self):
@@ -77,6 +81,7 @@ class TemperaSimulada:
         probabilidade_aceitacao = self.distancia_atual - distancia_solucao
         probabilidade_aceitacao /= self.temperatura
         probabilidade_aceitacao = math.exp(probabilidade_aceitacao)
+        probabilidade_aceitacao *= self.subida
 
         if distancia_solucao < self.distancia_atual:
             return True
@@ -138,7 +143,10 @@ class TemperaSimulada:
         pygame.display.flip()
         pygame.event.pump()
 
-    def executar(self):
+    def executar(self, subida=False):
+
+        if subida == True:
+            self.subida = 0
 
         while self.temperatura > 1 and self.falhas_consecutivas < 50:
             self.iteracao_tempera_simulada()
