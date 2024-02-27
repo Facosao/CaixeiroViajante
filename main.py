@@ -21,6 +21,7 @@ if __name__ == "__main__":
     melhor_vizinho_prox = []
     melhor_tempera_sim = []
     melhor_subida_encosta = []
+    melhor_algoritmo_genetico = []
 
     # ----- Variáveis de controle -----
     delay = 0.1
@@ -100,6 +101,13 @@ if __name__ == "__main__":
                     distancias.subida_encosta, melhor_subida_encosta = tempera.executar(subida=True)
                 
                 tempera.imprimir_solucao_custom(melhor_subida_encosta, (0, 255, 0))
+                estado = menu.IMPRIMIR_MENU
+
+            case menu.ALGORITMO_GENETICO:
+                if distancias.algoritmo_genetico == (-1):
+                    distancias.algoritmo_genetico, melhor_algoritmo_genetico = 
+
+                forca_bruta.iteracao_forca_bruta(pontos, melhor_algoritmo_genetico, (0, 255, 0))
                 estado = menu.IMPRIMIR_MENU
 
             case menu.NENHUMA_ENTRADA:

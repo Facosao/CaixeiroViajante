@@ -11,7 +11,6 @@ def nearest_neighbour(set: list[Data.Circulo], delay) -> float:
     surface = pygame.display.get_surface()
     surface.fill((255, 255, 255))
     Data.imprimir_pontos(set)
-    delay = float(delay)
 
     distancia_total = 0
     conexoes = len(set)
