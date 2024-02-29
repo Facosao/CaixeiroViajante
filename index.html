@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='./styles/style.css'>
+</head>
+<body>
+    <h1>Caixeiro Viajante</h1>
+    <p>Tamanho do conjunto de pontos</p>
+    <input id="qtd-pontos"></input>
+    <button>Gerar pontos</button>
+    <p>Selecionar algoritmo</p>
+    <input type="radio" id="op-fb" name="algoritmo" value="fb">
+    <label for="op-fb">Força bruta</label>
+    <input type="radio" id="op-nn" name="algoritmo" value="nn">
+    <label for="op-nn">Vizinho mais próximo</label>
+    <input type="radio" id="op-ts" name="algoritmo" value="ts">
+    <label for="op-ts">Têmpera Simulada</label>
+    <input type="radio" id="op-ag" name="algoritmo" value="ag">
+    <label for="op-ag">Algoritmo genético</label>
+    <br>
+    <button id="run">Calcular solução</button>
+    <br>
+    <canvas id="index-canvas" width="800" height="600"></canvas>
+    <script type="module" src='./dist/main.js'></script>
+</body>
+</html>
