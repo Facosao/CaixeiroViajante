@@ -1,9 +1,9 @@
 import { generatePoints } from "./point.js";
-import { Draw } from "./draw.js";
+import { bruteForce } from "./brute_force.js";
 
 export function execute() {
-    const points = generatePoints(50);
-    Draw.drawPoints(points);
+    const points = generatePoints(7);
+    bruteForce(points);
 }
 
 document.getElementById("run")?.addEventListener("click", execute);
