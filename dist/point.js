@@ -15,15 +15,17 @@ export class Point {
         return attempt;
     }
     checkOverlap(p) {
-        const dx = Math.abs(this.x - p.x);
-        const dy = Math.abs(this.y - p.y);
-        const distance = Math.abs(Math.hypot(dx, dy));
-        if (distance <= (Point.radius * 2)) {
+        if (this.distanceTo(p) <= (Point.radius * 2)) {
             return true;
         }
         else {
             return false;
         }
+    }
+    distanceTo(p) {
+        const dx = Math.abs(this.x - p.x);
+        const dy = Math.abs(this.y - p.y);
+        return Math.abs(Math.hypot(dx, dy));
     }
 }
 Point.radius = RADIUS;

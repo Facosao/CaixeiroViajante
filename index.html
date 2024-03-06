@@ -3,7 +3,7 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Page Title</title>
+    <title>Caixeiro Viajante</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='./styles/style.css'>
 </head>
@@ -11,15 +11,15 @@
     <h1>Caixeiro Viajante</h1>
     <p>Tamanho do conjunto de pontos</p>
     <input id="qtd-pontos"></input>
-    <button>Gerar pontos</button>
+    <button id="generate-points">Gerar pontos</button>
     <p>Selecionar algoritmo</p>
-    <input type="radio" id="op-fb" name="algoritmo" value="fb">
+    <input type="radio" id="op-fb" name="algoritmo" value="bf">
     <label for="op-fb">Força bruta</label>
     <input type="radio" id="op-nn" name="algoritmo" value="nn">
     <label for="op-nn">Vizinho mais próximo</label>
-    <input type="radio" id="op-ts" name="algoritmo" value="ts">
+    <input type="radio" id="op-ts" name="algoritmo" value="sa">
     <label for="op-ts">Têmpera Simulada</label>
-    <input type="radio" id="op-ag" name="algoritmo" value="ag">
+    <input type="radio" id="op-ag" name="algoritmo" value="ga">
     <label for="op-ag">Algoritmo genético</label>
     <br>
     <button id="run">Calcular solução</button>

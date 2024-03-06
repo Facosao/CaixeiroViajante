@@ -10,10 +10,10 @@ export class Draw {
             return result;
         }
     }
-    static circle(p) {
+    static circle(p, color = "blue") {
         const ctx = Draw.getContext();
         ctx.beginPath();
-        ctx.fillStyle = "blue";
+        ctx.fillStyle = color;
         ctx.arc(p.x, p.y, Point.radius, 0, 2 * Math.PI);
         ctx.fill();
         ctx.stroke();

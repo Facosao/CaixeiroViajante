@@ -22,15 +22,17 @@ export class Point {
     }
 
     checkOverlap(p: Point): boolean {
-        const dx = Math.abs(this.x - p.x);
-        const dy = Math.abs(this.y - p.y);
-        const distance = Math.abs(Math.hypot(dx, dy));
-
-        if (distance <= (Point.radius * 2)) {
+        if (this.distanceTo(p) <= (Point.radius * 2)) {
             return true;
         } else {
             return false;
         }
+    }
+
+    distanceTo(p: Point): number {
+        const dx = Math.abs(this.x - p.x);
+        const dy = Math.abs(this.y - p.y);
+        return Math.abs(Math.hypot(dx, dy));
     }
 }
 
