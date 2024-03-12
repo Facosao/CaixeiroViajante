@@ -25,7 +25,9 @@ function executeAlgorithm() {
             break;
         }
         case "nn": {
-            alert("Not implemented!");
+            if (POINTS) {
+                nearest_neighbor(POINTS);
+            }
             break;
         }
         case "sa": {

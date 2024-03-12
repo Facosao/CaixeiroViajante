@@ -3,7 +3,7 @@ import { totalDistance } from "./path.js";
 function clone(arr) {
     return JSON.parse(JSON.stringify(arr));
 }
-function range(n) {
+export function range(n) {
     const arr = [];
     for (let i = 0; i < n; i++) {
         arr.push(i);
@@ -43,5 +43,6 @@ export function bruteForce(points) {
         }
         Draw.path(points, path, "black");
     }
+    console.log("brute_force = " + totalDistance(points, best_path));
     Draw.path(points, best_path, "green");
 }

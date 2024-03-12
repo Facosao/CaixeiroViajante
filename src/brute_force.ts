@@ -6,7 +6,7 @@ function clone(arr: Array<number>): Array<number> {
     return JSON.parse(JSON.stringify(arr));
 }
 
-function range(n: number): Array<number> {
+export function range(n: number): Array<number> {
     const arr: Array<number> = [];
     for (let i = 0; i < n; i++) {
         arr.push(i);
@@ -56,5 +56,6 @@ export function bruteForce(points: Array<Point>) {
         Draw.path(points, path, "black");
     }
 
+    console.log("brute_force = " + totalDistance(points, best_path));
     Draw.path(points, best_path, "green");
 }

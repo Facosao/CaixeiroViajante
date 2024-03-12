@@ -1,6 +1,7 @@
 var _a, _b;
 import { generatePoints } from "./point.js";
 import { bruteForce } from "./brute_force.js";
+import { nearest_neighbor } from "./nearest_neighbor.js";
 import { Draw } from "./draw.js";
 let POINTS = null;
 function generatePointsCallback() {
@@ -21,7 +22,9 @@ function executeAlgorithm() {
             break;
         }
         case "nn": {
-            alert("Not implemented!");
+            if (POINTS) {
+                nearest_neighbor(POINTS);
+            }
             break;
         }
         case "sa": {
