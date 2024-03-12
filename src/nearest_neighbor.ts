@@ -20,7 +20,7 @@ export function nearest_neighbor(points: Array<Point>) {
         for (const idx of unvisited) {
             const distance = points[index].distanceTo(points[idx]);
             if ((smallest_distance === null) || (distance < smallest_distance)) {
-                smallest_distance = distance
+                smallest_distance = distance;
                 smallest_distance_index = idx;
             }
             Draw.line(points[index], points[idx], "red");
