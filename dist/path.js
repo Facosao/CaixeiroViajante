@@ -9,8 +9,9 @@ export function totalDistance(points, path) {
     return totalDistance;
 }
 class Path {
-    constructor(pathArray = []) {
+    constructor(points, pathArray = []) {
         this.path = pathArray;
+        this.points = points;
     }
     push(value) {
         this.path.push(value);
@@ -18,18 +19,18 @@ class Path {
     remove(atIndex) {
         this.path.splice(atIndex, 1);
     }
-    totalDistance(points) {
+    totalDistance() {
         let totalDistance = 0;
         for (let i = 0; i < this.path.length; i++) {
-            const dx = Math.abs(points[this.path[i]].x - points[this.path[(i + 1) % this.path.length]].x);
-            const dy = Math.abs(points[this.path[i]].y - points[this.path[(i + 1) % this.path.length]].y);
+            const dx = Math.abs(this.points[this.path[i]].x - this.points[this.path[(i + 1) % this.path.length]].x);
+            const dy = Math.abs(this.points[this.path[i]].y - this.points[this.path[(i + 1) % this.path.length]].y);
             const dist = Math.abs(Math.hypot(dx, dy)); // Unnecessary abs()?
             totalDistance += dist;
         }
         return totalDistance;
     }
     isShorterThan(path) {
-        const hostDistance = this.path.totalDistance();
+        const hostDistance = this.totalDistance();
         const guestDistance = path.totalDistance();
         return hostDistance < guestDistance;
     }
