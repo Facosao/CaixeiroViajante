@@ -1,3 +1,4 @@
+var _a;
 import { Point } from "./point.js";
 export class Draw {
     static getContext() {
@@ -11,39 +12,38 @@ export class Draw {
         }
     }
     static circle(p, color = "blue") {
-        const ctx = Draw.getContext();
-        ctx.beginPath();
-        ctx.fillStyle = color;
-        ctx.arc(p.x, p.y, Point.radius, 0, 2 * Math.PI);
-        ctx.fill();
-        ctx.stroke();
+        this.ctx.beginPath();
+        this.ctx.fillStyle = color;
+        this.ctx.arc(p.x, p.y, Point.radius, 0, 2 * Math.PI);
+        this.ctx.fill();
+        this.ctx.stroke();
     }
     static points(points) {
         for (const point of points) {
-            Draw.circle(point);
+            _a.circle(point);
         }
     }
     static line(p1, p2, color) {
-        const ctx = Draw.getContext();
-        ctx.beginPath();
-        ctx.strokeStyle = color;
-        ctx.moveTo(p1.x, p1.y);
-        ctx.lineTo(p2.x, p2.y);
-        ctx.stroke();
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = color;
+        this.ctx.moveTo(p1.x, p1.y);
+        this.ctx.lineTo(p2.x, p2.y);
+        this.ctx.stroke();
     }
     static clearScreen() {
-        const ctx = Draw.getContext();
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        //ctx.fillStyle = "transparent";
-        //ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        //ctx.stroke();
-        //ctx.reset();
+        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     }
     static path(points, path, color) {
-        Draw.clearScreen();
-        for (let i = 0; i < path.length; i++) {
-            Draw.line(points[path[i]], points[path[(i + 1) % path.length]], color);
+        _a.clearScreen();
+        for (let i = 1; i < path.length; i++) {
+            _a.line(points[path[i - 1]], points[path[i]], color);
         }
-        Draw.points(points);
+        // Complete path, connect last point to first point
+        if (path.length == points.length) {
+            _a.line(points[path[path.length - 1]], points[path[0]], color);
+        }
+        _a.points(points);
     }
 }
+_a = Draw;
+Draw.ctx = _a.getContext();

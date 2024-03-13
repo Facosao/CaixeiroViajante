@@ -1,6 +1,8 @@
 import { Point } from "./point.js";
 
 export class Draw {
+    private static ctx = this.getContext();
+
     private static getContext(): CanvasRenderingContext2D {
         const myCanvas = <HTMLCanvasElement> document.getElementById("index-canvas");
         const result = myCanvas.getContext("2d");
@@ -12,12 +14,11 @@ export class Draw {
     }
 
     static circle(p: Point, color: string = "blue") {
-        const ctx = Draw.getContext();
-        ctx.beginPath();
-        ctx.fillStyle = color;
-        ctx.arc(p.x, p.y, Point.radius, 0, 2 * Math.PI);
-        ctx.fill();
-        ctx.stroke();
+        this.ctx.beginPath();
+        this.ctx.fillStyle = color;
+        this.ctx.arc(p.x, p.y, Point.radius, 0, 2 * Math.PI);
+        this.ctx.fill();
+        this.ctx.stroke();
     }
 
     static points(points: Array<Point>) {
@@ -27,28 +28,28 @@ export class Draw {
     }
 
     static line(p1: Point, p2: Point, color: string) {
-        const ctx = Draw.getContext();
-        ctx.beginPath();
-        ctx.strokeStyle = color;
-        ctx.moveTo(p1.x, p1.y);
-        ctx.lineTo(p2.x, p2.y);
-        ctx.stroke();
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = color;
+        this.ctx.moveTo(p1.x, p1.y);
+        this.ctx.lineTo(p2.x, p2.y);
+        this.ctx.stroke();
     }
 
     static clearScreen() {
-        const ctx = Draw.getContext();
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        //ctx.fillStyle = "transparent";
-        //ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        //ctx.stroke();
-        //ctx.reset();
+        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     }
 
     static path(points: Array<Point>, path: Array<number>, color: string) {
         Draw.clearScreen();
-        for (let i = 0; i < path.length; i++) {
-            Draw.line(points[path[i]], points[path[(i+1) % path.length]], color);
+        for (let i = 1; i < path.length; i++) {
+            Draw.line(points[path[i-1]], points[path[i]], color);
         }
+
+        // Complete path, connect last point to first point
+        if (path.length == points.length) { 
+            Draw.line(points[path[path.length - 1]], points[path[0]], color);
+        }
+
         Draw.points(points);
     }
 }

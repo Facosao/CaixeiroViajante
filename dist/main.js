@@ -1,7 +1,7 @@
 var _a, _b;
 import { generatePoints } from "./point.js";
 import { bruteForce } from "./brute_force.js";
-import { nearest_neighbor } from "./nearest_neighbor.js";
+import { nearestNeighbor } from "./nearest_neighbor.js";
 import { Draw } from "./draw.js";
 let POINTS = null;
 function generatePointsCallback() {
@@ -17,13 +17,17 @@ function executeAlgorithm() {
     switch (method.value) {
         case "bf": {
             if (POINTS) {
+                if (POINTS.length > 10) {
+                    alert("Too many points!");
+                    return;
+                }
                 bruteForce(POINTS);
             }
             break;
         }
         case "nn": {
             if (POINTS) {
-                nearest_neighbor(POINTS);
+                nearestNeighbor(POINTS);
             }
             break;
         }
