@@ -1,36 +1,35 @@
 import { Point } from "./point.js";
+import { Path } from "./path.js";
+import { range } from "./brute_force.js";
 
-function simulatedAnnealing(points: Array<Point>) {
 
+
+export function simulatedAnnealing(points: Array<Point>) {
     const cooldownRate = 0.0005;
     let temperature = 100_000;
     let failCounter = 0;
 
-    let currentDistance;
-    let currentPath;
-
-    let bestDistance;
-    let bestPath;
+    let currentPath = new Path(points);
+    let bestPath = new Path(points);
+    let newPath = new Path(points);
 
     while ((temperature > 1) && (failCounter < 50)) {
-        const newPath;
-        const newDistance;
+        newPath = mutatePath(newPath);
         let shouldUseSolution = false;
 
-        if (newDistance < currentDistance) {
-            shouldUseSolution = true;
-        } else if (Math.exp((currentDistance - newDistance) / temperature) > Math.random()) {
+        if ((newPath.fit() < currentPath.fit()) ||
+            (Math.exp((currentPath.fit() - newPath.fit()) / temperature) > Math.random())) {
             shouldUseSolution = true;
         }
 
         if (shouldUseSolution) {
-            currentDistance = newDistance;
             currentPath = newPath;
             failCounter = 0;
+        } else {
+            failCounter += 1;
         }
 
-        if (newDistance < bestDistance) {
-            bestDistance = newDistance;
+        if (newPath.fit() < bestPath.fit()) {
             bestPath = newPath;
         }
 
