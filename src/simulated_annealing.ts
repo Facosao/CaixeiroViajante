@@ -1,39 +1,70 @@
 import { Point } from "./point.js";
 import { Path } from "./path.js";
-import { range } from "./brute_force.js";
-
-
+import { Draw } from "./draw.js";
 
 export function simulatedAnnealing(points: Array<Point>) {
     const cooldownRate = 0.0005;
     let temperature = 100_000;
     let failCounter = 0;
+    
+    let newPath = Path.initialGuess(points);
+    let currentPath = newPath;
+    let bestPath = newPath;
 
-    let currentPath = new Path(points);
-    let bestPath = new Path(points);
-    let newPath = new Path(points);
+    //timestamp: DOMHighResTimeStamp
+    function step() {
+        let iter = 0;
+        let previousBest = bestPath.fit();
 
-    while ((temperature > 1) && (failCounter < 50)) {
-        newPath = mutatePath(newPath);
-        let shouldUseSolution = false;
+        while ((temperature > 1) && (failCounter >= 0)) {
+            newPath.mutate();
+            let shouldUseSolution = false;
 
-        if ((newPath.fit() < currentPath.fit()) ||
-            (Math.exp((currentPath.fit() - newPath.fit()) / temperature) > Math.random())) {
-            shouldUseSolution = true;
-        }
+            const newFit = newPath.fit();
+            const curFit = currentPath.fit();
 
-        if (shouldUseSolution) {
-            currentPath = newPath;
-            failCounter = 0;
-        } else {
-            failCounter += 1;
-        }
+            if (newPath.fit() < currentPath.fit()) {
+                failCounter += 1;
+                //console.log("cur", currentPath.fit(), "new", newPath.fit());
+            }
 
-        if (newPath.fit() < bestPath.fit()) {
-            bestPath = newPath;
-        }
+            if ((newPath.fit() < currentPath.fit()) ||
+                (Math.exp((currentPath.fit() - newPath.fit()) / temperature) > Math.random())) {
+                shouldUseSolution = true;
+            }
 
-        temperature *= (1 - cooldownRate);
+            if (shouldUseSolution) {
+                currentPath = Path.clone(newPath);
+                //failCounter += 1;
+            } else {
+                //failCounter -= 1;
+            }
+
+            const bestFit = bestPath.fit();
+
+            if (newPath.fit() < bestPath.fit()) {
+                if (previousBest < bestPath.fit()) {
+                    throw new Error("best = " + bestPath.fit() + "previous = " + previousBest);
+                }
+
+                previousBest = bestPath.fit();
+                bestPath = Path.clone(newPath);
+                //failCounter += 1;
+            }
+
+            temperature *= (1 - cooldownRate);
+            iter += 1;
+            if ((iter % 1000) == 0) {
+                console.log("iter", iter, "best = ", bestPath.fit(), "counter = ", failCounter);
+            }
+            Draw.path(bestPath.points, bestPath.raw, "black");
+            //requestAnimationFrame(step);
+            //step();
+        } //else {
+            Draw.path(bestPath.points, bestPath.raw, "green");
+            console.log("simulated_annealing = " + bestPath.fit());
+        //}
     }
 
+    requestAnimationFrame(step);
 }

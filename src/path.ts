@@ -1,5 +1,5 @@
 import { Point } from "./point.js";
-import { range } from "./brute_force.js";
+import { range, clone } from "./brute_force.js";
 
 export function totalDistance(points: Array<Point>, path: Array<number>): number {
     let totalDistance: number = 0;
@@ -14,15 +14,15 @@ export function totalDistance(points: Array<Point>, path: Array<number>): number
 
 export class Path {
     public raw: Array<number>;
-    public length: number;
+    //public length: number;
+    public points: Array<Point>;
 
-    private points: Array<Point>;
     private fitness: number | null = null;
 
     constructor(points: Array<Point>, rawPath: Array<number> = []) {
         this.raw = rawPath;
         this.points = points;
-        this.length = this.raw.length;
+        //this.length = this.raw.length;
     }
 
     static initialGuess(points: Array<Point>): Path {
@@ -41,53 +41,50 @@ export class Path {
         return new Path(points, result);
     }
 
+    static clone(src: Path): Path {
+        return new Path(src.points, clone(src.raw));
+    }
+
     fit(): number {
         if (this.raw.length !== this.points.length) {
-            throw new Error("Can't calculate fitness for an incomplete path!");
+            throw new Error("Can't calculate fitness for an incomplete path!" + 
+            "\nraw = " + this.raw.length + " points = " + this.points.length);
         }
 
-        if (this.fitness !== null) {
-            return this.fitness;
-        }
+        //if (this.fitness !== null) {
+        //    return this.fitness;
+        //}
         
-        this.fitness = 0;
+        //this.fitness = 0;
+        let distance = 0;
         for (let i = 0; i < this.raw.length; i++) {
             const dx = Math.abs(this.points[this.raw[i]].x - this.points[this.raw[(i+1) % this.raw.length]].x);
             const dy = Math.abs(this.points[this.raw[i]].y - this.points[this.raw[(i+1) % this.raw.length]].y);
             const dist = Math.abs(Math.hypot(dx, dy)); // Unnecessary abs()?
-            this.fitness += dist;
+            //this.fitness += dist;
+            distance += dist;
         }
-        return this.fitness;
+        //return this.fitness;
+        return distance;
     }
 
     mutate() {
         const startIndex = Math.floor(Math.random() * (this.raw.length - 1));
         const endIndex = Math.floor(Math.random() * (this.raw.length - startIndex)) + startIndex;
-
-        
-        for (let i = startIndex; i <= endIndex; i++) {
-            const aux = this.raw[i];
-            this.raw[i] = this.raw[endIndex - (i - startIndex)];
-            this.raw[endIndex - (i - startIndex)] = aux;
-        }
-
-        /*
-        const startIndex = Math.floor(Math.random() * (arr.length - 1));
-        const endIndex = Math.floor(Math.random() * (arr.length - startIndex)) + startIndex;
-        console.log("start = " + startIndex + ", end = " + endIndex);
+        //console.log("start = " + startIndex + ", end = " + endIndex);
 
         const aux: Array<number> = []
-        for (let i = startIndex; i < endIndex; i++) {
-            aux.push(arr[i]);
+        for (let i = startIndex; i <= endIndex; i++) {
+            aux.push(this.raw[i]);
         }
 
         aux.reverse();
 
-        for (let i = startIndex; i < endIndex; i++) {
-            arr[i] = aux[i];
+        for (let i = 0; i < aux.length; i++) {
+            this.raw[startIndex + i] = aux[i];
         } 
 
-        console.log(arr);
-        */
+        this.fitness = null;
+        //console.log(arr);
     }
 }

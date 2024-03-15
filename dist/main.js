@@ -1,8 +1,9 @@
 var _a, _b;
 import { generatePoints } from "./point.js";
+import { Draw } from "./draw.js";
 import { bruteForce } from "./brute_force.js";
 import { nearestNeighbor } from "./nearest_neighbor.js";
-import { Draw } from "./draw.js";
+import { simulatedAnnealing } from "./simulated_annealing.js";
 let POINTS = null;
 function generatePointsCallback() {
     const inputBox = document.getElementById("qtd-pontos");
@@ -32,7 +33,9 @@ function executeAlgorithm() {
             break;
         }
         case "sa": {
-            alert("Not implemented!");
+            if (POINTS) {
+                simulatedAnnealing(POINTS);
+            }
             break;
         }
         case "ga": {

@@ -2,7 +2,7 @@ import { Draw } from "./draw.js";
 import { Point } from "./point.js";
 import { totalDistance } from "./path.js";
 
-function clone(arr: Array<number>): Array<number> {
+export function clone(arr: Array<number>): Array<number> {
     return JSON.parse(JSON.stringify(arr));
 }
 

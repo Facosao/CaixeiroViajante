@@ -1,6 +1,6 @@
 import { Draw } from "./draw.js";
 import { totalDistance } from "./path.js";
-function clone(arr) {
+export function clone(arr) {
     return JSON.parse(JSON.stringify(arr));
 }
 export function range(n) {

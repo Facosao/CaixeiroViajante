@@ -1,7 +1,8 @@
 import { Point, generatePoints } from "./point.js";
+import { Draw } from "./draw.js";
 import { bruteForce } from "./brute_force.js";
 import { nearestNeighbor } from "./nearest_neighbor.js";
-import { Draw } from "./draw.js";
+import { simulatedAnnealing } from "./simulated_annealing.js";
 
 let POINTS: Array<Point> | null = null; 
 
@@ -36,7 +37,9 @@ function executeAlgorithm() {
             break;
         }
         case "sa": {
-            alert("Not implemented!");
+            if (POINTS) {
+                simulatedAnnealing(POINTS);
+            }
             break;
         }
         case "ga": {
