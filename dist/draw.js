@@ -39,7 +39,7 @@ export class Draw {
             _a.line(points[path[i - 1]], points[path[i]], color);
         }
         // Complete path, connect last point to first point
-        if (path.length == points.length) {
+        if (path.length === points.length) {
             _a.line(points[path[path.length - 1]], points[path[0]], color);
         }
         _a.points(points);

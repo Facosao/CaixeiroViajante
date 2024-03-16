@@ -14,7 +14,6 @@ export function totalDistance(points: Array<Point>, path: Array<number>): number
 
 export class Path {
     public raw: Array<number>;
-    //public length: number;
     public points: Array<Point>;
 
     private fitness: number | null = null;
@@ -22,7 +21,6 @@ export class Path {
     constructor(points: Array<Point>, rawPath: Array<number> = []) {
         this.raw = rawPath;
         this.points = points;
-        //this.length = this.raw.length;
     }
 
     static initialGuess(points: Array<Point>): Path {
@@ -51,27 +49,23 @@ export class Path {
             "\nraw = " + this.raw.length + " points = " + this.points.length);
         }
 
-        //if (this.fitness !== null) {
-        //    return this.fitness;
-        //}
+        if (this.fitness !== null) {
+            return this.fitness;
+        }
         
-        //this.fitness = 0;
-        let distance = 0;
+        this.fitness = 0;
         for (let i = 0; i < this.raw.length; i++) {
             const dx = Math.abs(this.points[this.raw[i]].x - this.points[this.raw[(i+1) % this.raw.length]].x);
             const dy = Math.abs(this.points[this.raw[i]].y - this.points[this.raw[(i+1) % this.raw.length]].y);
-            const dist = Math.abs(Math.hypot(dx, dy)); // Unnecessary abs()?
-            //this.fitness += dist;
-            distance += dist;
+            this.fitness += Math.abs(Math.hypot(dx, dy)); // Unnecessary abs()?;
         }
-        //return this.fitness;
-        return distance;
+        
+        return this.fitness;
     }
 
     mutate() {
         const startIndex = Math.floor(Math.random() * (this.raw.length - 1));
         const endIndex = Math.floor(Math.random() * (this.raw.length - startIndex)) + startIndex;
-        //console.log("start = " + startIndex + ", end = " + endIndex);
 
         const aux: Array<number> = []
         for (let i = startIndex; i <= endIndex; i++) {
@@ -85,6 +79,5 @@ export class Path {
         } 
 
         this.fitness = null;
-        //console.log(arr);
     }
 }
