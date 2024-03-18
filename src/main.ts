@@ -3,6 +3,7 @@ import { Draw } from "./draw.js";
 import { bruteForce } from "./brute_force.js";
 import { nearestNeighbor } from "./nearest_neighbor.js";
 import { simulatedAnnealing } from "./simulated_annealing.js";
+import { geneticAlgorithm } from "./genetic_algorithm.js";
 
 let POINTS: Array<Point> | null = null; 
 
@@ -43,7 +44,9 @@ function executeAlgorithm() {
             break;
         }
         case "ga": {
-            alert("Not implemented!");
+            if (POINTS) {
+                geneticAlgorithm(POINTS);
+            }
             break;
         }
     }
