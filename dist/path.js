@@ -31,6 +31,14 @@ export class Path {
     static clone(src) {
         return new Path(src.points, clone(src.raw));
     }
+    isValidPath() {
+        for (const value of this.raw) {
+            if (this.raw.lastIndexOf(value) !== this.raw.indexOf(value)) {
+                return false;
+            }
+        }
+        return true;
+    }
     fit() {
         if (this.raw.length !== this.points.length) {
             throw new Error("Can't calculate fitness for an incomplete path!" +
@@ -38,6 +46,10 @@ export class Path {
         }
         if (this.fitness !== null) {
             return this.fitness;
+        }
+        if (!this.isValidPath()) {
+            this.fitness = 999999999;
+            return this.fitness; // Temp?
         }
         this.fitness = 0;
         for (let i = 0; i < this.raw.length; i++) {

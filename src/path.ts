@@ -16,7 +16,7 @@ export class Path {
     public raw: Array<number>;
     public points: Array<Point>;
 
-    private fitness: number | null = null;
+    public fitness: number | null = null;
 
     constructor(points: Array<Point>, rawPath: Array<number> = []) {
         this.raw = rawPath;
@@ -43,6 +43,16 @@ export class Path {
         return new Path(src.points, clone(src.raw));
     }
 
+    isValidPath(): boolean {
+        for (const value of this.raw) {
+            if (this.raw.lastIndexOf(value) !== this.raw.indexOf(value)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     fit(): number {
         if (this.raw.length !== this.points.length) {
             throw new Error("Can't calculate fitness for an incomplete path!" + 
@@ -53,6 +63,11 @@ export class Path {
             return this.fitness;
         }
         
+        if (!this.isValidPath()) {
+            this.fitness = 999999999;
+            return this.fitness; // Temp?
+        }
+
         this.fitness = 0;
         for (let i = 0; i < this.raw.length; i++) {
             const dx = Math.abs(this.points[this.raw[i]].x - this.points[this.raw[(i+1) % this.raw.length]].x);

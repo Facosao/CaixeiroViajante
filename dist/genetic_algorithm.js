@@ -6,7 +6,7 @@ export function geneticAlgorithm(points) {
     let iter = 0;
     let failCounter = 0;
     let bestIndividual = population[0];
-    while (iter < 50000) {
+    while (failCounter < 1000) {
         if (population.length !== POPULATION_SIZE) {
             throw new Error("Population size changed!");
         }
@@ -16,8 +16,11 @@ export function geneticAlgorithm(points) {
         }
         // Select (POPULATION_SIZE / 2) individuals
         sortPopulation(population);
-        for (let i = 0; i < (POPULATION_SIZE / 2); i++) {
+        for (let i = population.length; i >= (POPULATION_SIZE / 2); i--) {
             population.splice(i, 1);
+        }
+        if (population.length !== 25) {
+            throw new Error("Removed too many elements!");
         }
         // Crossover (single-pivot)
         for (let i = 0; i < (POPULATION_SIZE / 2); i++) {
@@ -31,6 +34,7 @@ export function geneticAlgorithm(points) {
             for (let j = pivot; j < newIndividual.raw.length; j++) {
                 newIndividual.raw[j] = population[second].raw[j];
             }
+            newIndividual.fitness = null;
             population.push(newIndividual);
         }
         // Mutation
@@ -50,6 +54,9 @@ export function geneticAlgorithm(points) {
         }
         iter += 1;
         if ((iter % 1000) === 0) {
+            if (iter === 30000) {
+                console.log("HALT");
+            }
             console.log("iter", iter, "best =", bestIndividual.fit());
         }
     }
