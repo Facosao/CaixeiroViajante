@@ -34,19 +34,20 @@ export class Point {
         const dy = Math.abs(this.y - p.y);
         return Math.abs(Math.hypot(dx, dy));
     }
-}
 
-export function generatePoints(n: number): Array<Point> {
-    const points: Array<Point> = [];
-    for (let i = 0; i < n; i++) {
-        points.push(new Point());
-    }
-    
-    for (let i = 1; i < n; i++) {
-        while (points[i].checkOverlap(points[i-1])) {
-            points[i] = new Point();
+    static generatePoints(n: number): Array<Point> {
+        const points: Array<Point> = [];
+        for (let i = 0; i < n; i++) {
+            points.push(new Point());
         }
+        
+        for (let i = 1; i < n; i++) {
+            while (points[i].checkOverlap(points[i-1])) {
+                points[i] = new Point();
+            }
+        }
+    
+        return points;
     }
-
-    return points;
 }
+

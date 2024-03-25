@@ -1,4 +1,4 @@
-import { range, clone } from "./brute_force.js";
+import { range, clone, randInt } from "../util.js";
 export function totalDistance(points, path) {
     let totalDistance = 0;
     for (let i = 0; i < path.length; i++) {
@@ -10,8 +10,10 @@ export function totalDistance(points, path) {
     return totalDistance;
 }
 export class Path {
+    raw;
+    points;
+    fitness = null;
     constructor(points, rawPath = []) {
-        this.fitness = null;
         this.raw = rawPath;
         this.points = points;
     }
@@ -19,7 +21,7 @@ export class Path {
         const available = range(points.length);
         const result = [];
         while (available.length > 0) {
-            const rng = Math.floor(Math.random() * points.length);
+            const rng = randInt(points.length);
             if (rng < available.length) {
                 const aux = available[rng];
                 available.splice(rng, 1);
@@ -60,8 +62,8 @@ export class Path {
         return this.fitness;
     }
     mutate() {
-        const startIndex = Math.floor(Math.random() * (this.raw.length - 1));
-        const endIndex = Math.floor(Math.random() * (this.raw.length - startIndex)) + startIndex;
+        const startIndex = randInt(this.raw.length - 1);
+        const endIndex = randInt(this.raw.length - startIndex) + startIndex;
         const aux = [];
         for (let i = startIndex; i <= endIndex; i++) {
             aux.push(this.raw[i]);
@@ -71,5 +73,30 @@ export class Path {
             this.raw[startIndex + i] = aux[i];
         }
         this.fitness = null;
+    }
+    swap(raw) {
+        this.raw = raw;
+        this.fitness = null;
+    }
+    static generateAllPaths(points) {
+        const result = [];
+        const f = (vec, temp) => {
+            for (const num of vec) {
+                const new_temp = clone(temp);
+                new_temp.push(num);
+                const new_vec = clone(vec);
+                for (let i = 0; i < vec.length; i++) {
+                    if (vec[i] === num) {
+                        new_vec.splice(i, 1);
+                    }
+                }
+                f(new_vec, new_temp);
+            }
+            if (vec.length === 0) {
+                result.push(new Path(points, clone(temp)));
+            }
+        };
+        f(range(points.length), []);
+        return result;
     }
 }

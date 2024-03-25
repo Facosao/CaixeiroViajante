@@ -8,23 +8,34 @@
     <link rel='stylesheet' type='text/css' media='screen' href='./styles/style.css'>
 </head>
 <body>
-    <h1>Caixeiro Viajante</h1>
-    <p>Tamanho do conjunto de pontos</p>
-    <input id="qtd-pontos"></input>
-    <button id="generate-points">Gerar pontos</button>
-    <p>Selecionar algoritmo</p>
-    <input type="radio" id="op-fb" name="algoritmo" value="bf">
-    <label for="op-fb">Força bruta</label>
-    <input type="radio" id="op-nn" name="algoritmo" value="nn">
-    <label for="op-nn">Vizinho mais próximo</label>
-    <input type="radio" id="op-ts" name="algoritmo" value="sa">
-    <label for="op-ts">Têmpera Simulada</label>
-    <input type="radio" id="op-ag" name="algoritmo" value="ga">
-    <label for="op-ag">Algoritmo genético</label>
-    <br>
-    <button id="run">Calcular solução</button>
-    <br>
-    <canvas id="index-canvas" width="800" height="600"></canvas>
+    <div class="flex-container">
+        <div class="controls">
+            <h1>Caixeiro Viajante</h1>
+            <p>Tamanho do conjunto de pontos:</p>
+            <input id="qtd-pontos"></input>
+            <button id="generate-points">Gerar pontos</button>
+
+            <p>Selecionar algoritmo:</p>
+            <input type="radio" id="op-bf" name="algoritmo" value="bf">
+            <label for="op-bf">Força bruta</label>
+            <br>
+            <input type="radio" id="op-nn" name="algoritmo" value="nn">
+            <label for="op-nn">Vizinho mais próximo</label>
+            <br>
+            <input type="radio" id="op-sa" name="algoritmo" value="sa">
+            <label for="op-sa">Têmpera Simulada</label>
+            <br>
+            <input type="radio" id="op-ga" name="algoritmo" value="ga">
+            <label for="op-ga">Algoritmo genético</label>
+            <br>
+            <button id="run">Calcular solução</button>
+            <p>Resultado:</p>
+            <output id="text-output">-----</output>           
+        </div>
+        <div class="framebuffer">
+            <canvas id="index-canvas" width="800" height="600"></canvas>
+        </div>
+    </div>    
     <script type="module" src='./dist/main.js'></script>
 </body>
 </html>

@@ -1,6 +1,7 @@
-var _a;
-import { Point } from "./point.js";
+import { Point } from "./data/point.js";
 export class Draw {
+    static ctx = this.getContext();
+    static logElement = document.getElementById("text-output");
     static getContext() {
         const myCanvas = document.getElementById("index-canvas");
         const result = myCanvas.getContext("2d");
@@ -20,7 +21,7 @@ export class Draw {
     }
     static points(points) {
         for (const point of points) {
-            _a.circle(point);
+            Draw.circle(point);
         }
     }
     static line(p1, p2, color) {
@@ -34,16 +35,20 @@ export class Draw {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     }
     static path(points, path, color) {
-        _a.clearScreen();
+        if (color === "green") {
+            color = "#19a619";
+        }
+        Draw.clearScreen();
         for (let i = 1; i < path.length; i++) {
-            _a.line(points[path[i - 1]], points[path[i]], color);
+            Draw.line(points[path[i - 1]], points[path[i]], color);
         }
         // Complete path, connect last point to first point
         if (path.length === points.length) {
-            _a.line(points[path[path.length - 1]], points[path[0]], color);
+            Draw.line(points[path[path.length - 1]], points[path[0]], color);
         }
-        _a.points(points);
+        Draw.points(points);
+    }
+    static log(s) {
+        this.logElement.innerText = s;
     }
 }
-_a = Draw;
-Draw.ctx = _a.getContext();

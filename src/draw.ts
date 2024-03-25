@@ -1,10 +1,11 @@
-import { Point } from "./point.js";
+import { Point } from "./data/point.js";
 
 export class Draw {
     private static ctx = this.getContext();
+    private static logElement = <HTMLElement>document.getElementById("text-output");
 
     private static getContext(): CanvasRenderingContext2D {
-        const myCanvas = <HTMLCanvasElement> document.getElementById("index-canvas");
+        const myCanvas = <HTMLCanvasElement>document.getElementById("index-canvas");
         const result = myCanvas.getContext("2d");
         if (result === null) {
             throw new Error("Failed to get canvas element!");
@@ -40,6 +41,10 @@ export class Draw {
     }
 
     static path(points: Array<Point>, path: Array<number>, color: string) {
+        if (color === "green") {
+            color = "#19a619";
+        }
+        
         Draw.clearScreen();
         for (let i = 1; i < path.length; i++) {
             Draw.line(points[path[i-1]], points[path[i]], color);
@@ -51,5 +56,9 @@ export class Draw {
         }
 
         Draw.points(points);
+    }
+
+    static log(s: string) {
+        this.logElement.innerText = s;
     }
 }

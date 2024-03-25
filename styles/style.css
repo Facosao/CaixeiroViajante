@@ -1,0 +1,23 @@
+body {
+    font-size: x-large;
+}
+
+p {
+    font-weight: bold;
+}
+
+canvas {
+    border: 1px solid black;
+}
+
+.flex-container {
+    display: flex;
+}
+
+.controls {
+    flex: 1;
+}
+
+.framebuffer {
+    flex: 2;
+}
