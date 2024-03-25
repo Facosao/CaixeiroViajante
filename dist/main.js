@@ -5,6 +5,7 @@ import { bruteForce } from "./algos/brute_force.js";
 import { nearestNeighbor } from "./algos/nearest_neighbor.js";
 import { simulatedAnnealing } from "./algos/simulated_annealing.js";
 import { geneticAlgorithm } from "./algos/genetic_algorithm.js";
+//import { geneticAlgorithm } from "./algos/genetic_algorithm_old.js";
 let POINTS = null;
 let bestBruteForce;
 let bestNearestNeighbor;

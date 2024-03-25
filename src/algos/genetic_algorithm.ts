@@ -9,6 +9,7 @@ export function geneticAlgorithm(points: Array<Point>, bestPath: Path) {
     const population = initialPopulation(points, POPULATION_SIZE);
     let failCounter = 0;
     let iter = 0;
+    let bestIndividual: Path = population[0];
 
     function step() {
         while (failCounter < 500) {
@@ -56,9 +57,10 @@ export function geneticAlgorithm(points: Array<Point>, bestPath: Path) {
     
             // Termination condition
             const currentBest = findBestIndividual(population);
-            if (currentBest.fit() < bestPath.fit()) {
+            if (currentBest.fit() < bestIndividual.fit()) {
                 //bestPath = currentBest;
-                bestPath.swap(currentBest.raw);
+                //bestPath.swap(currentBest.raw);
+                bestIndividual = currentBest;
                 failCounter = 0;
             } else {
                 failCounter += 1;
@@ -68,16 +70,17 @@ export function geneticAlgorithm(points: Array<Point>, bestPath: Path) {
     
             // Draw (implementation detail)
             if ((iter % 100) === 0) {
-                Draw.log("n = " + iter + "\nMenor distância = " + bestPath.fit());
-                Draw.path(bestPath.points, bestPath.raw, "black");
+                Draw.log("n = " + iter + "\nMenor distância = " + bestIndividual.fit());
+                Draw.path(bestIndividual.points, bestIndividual.raw, "black");
                 requestAnimationFrame(step);
                 break;
             }
         }
 
         if (failCounter >= 500) {
-            Draw.log("Distância total = " + bestPath.fit());
-            Draw.path(bestPath.points, bestPath.raw, "green");
+            Draw.log("Distância total = " + bestIndividual.fit());
+            Draw.path(bestIndividual.points, bestIndividual.raw, "green");
+            bestPath.swap(bestIndividual.raw);
         }
     }
 

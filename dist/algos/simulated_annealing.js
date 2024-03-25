@@ -2,7 +2,7 @@ import { Path } from "../data/path.js";
 import { Draw } from "../draw.js";
 export function simulatedAnnealing(points, bestPath) {
     const cooldownRate = 0.0005;
-    let temperature = 100000;
+    let temperature = 100_000;
     let iter = 0;
     let currentPath = Path.initialGuess(points);
     function step() {
